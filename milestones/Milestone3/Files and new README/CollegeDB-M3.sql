@@ -1300,7 +1300,136 @@ CREATE TABLE IF NOT EXISTS `TakesLabIn` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+DELIMITER $$
 
+DROP TRIGGER IF EXISTS `Team_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Team_AFTER_INSERT` AFTER INSERT ON `Team` FOR EACH ROW
+BEGIN
+UPDATE Division SET num_of_teams = num_of_teams +1 WHERE iddivision = NEW.division;
+END$$
+
+
+DROP TRIGGER IF EXISTS `Team_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Team_BEFORE_DELETE` BEFORE DELETE ON `Team` FOR EACH ROW
+BEGIN
+UPDATE Division SET num_of_teams = num_of_teams-1 WHERE iddivision = OLD.division;
+END$$
+
+
+DROP TRIGGER IF EXISTS `TeamMember_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`TeamMember_AFTER_INSERT` AFTER INSERT ON `TeamMember` FOR EACH ROW
+BEGIN
+UPDATE Team SET number_of_players = number_of_players+1 WHERE idteam = NEW.team;
+END$$
+
+
+DROP TRIGGER IF EXISTS `TeamMember_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`TeamMember_BEFORE_DELETE` BEFORE DELETE ON `TeamMember` FOR EACH ROW
+BEGIN
+UPDATE Team SET number_of_players = number_of_players -1 WHERE idteam = OLD.team;
+END$$
+
+
+DROP TRIGGER IF EXISTS `FratMember_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`FratMember_AFTER_INSERT` AFTER INSERT ON `FratMember` FOR EACH ROW
+BEGIN
+UPDATE Fraternity SET num_of_members = num_of_members +1 WHERE idfraternity = NEW.frat;
+
+END$$
+
+
+DROP TRIGGER IF EXISTS `FratMember_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`FratMember_BEFORE_DELETE` BEFORE DELETE ON `FratMember` FOR EACH ROW
+BEGIN
+UPDATE Fraternity SET num_of_members = num_of_members -1 WHERE idfraternity = OLD.frat;
+
+END$$
+
+
+DROP TRIGGER IF EXISTS `Enrolls_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Enrolls_AFTER_INSERT` AFTER INSERT ON `Enrolls` FOR EACH ROW
+BEGIN
+UPDATE Section SET number_of_students = number_of_students +1 WHERE idsection = NEW.section;
+END$$
+
+
+DROP TRIGGER IF EXISTS `Enrolls_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Enrolls_BEFORE_DELETE` BEFORE DELETE ON `Enrolls` FOR EACH ROW
+BEGIN
+UPDATE Section SET number_of_students = number_of_students - 1 WHERE idsection = OLD.section; 
+END$$
+
+
+DROP TRIGGER IF EXISTS `BelongsTo_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`BelongsTo_AFTER_INSERT` AFTER INSERT ON `BelongsTo` FOR EACH ROW
+BEGIN
+UPDATE Department SET number_of_degrees = number_of_degrees +1 WHERE iddepartment = NEW.department;
+END$$
+
+
+DROP TRIGGER IF EXISTS `BelongsTo_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`BelongsTo_BEFORE_DELETE` BEFORE DELETE ON `BelongsTo` FOR EACH ROW
+BEGIN
+UPDATE Department SET number_of_degrees = number_of_degrees -1 WHERE iddepartment = OLD.department;
+END$$
+
+
+DROP TRIGGER IF EXISTS `Teaches_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Teaches_AFTER_INSERT` AFTER INSERT ON `Teaches` FOR EACH ROW
+BEGIN
+UPDATE Professor SET number_of_sections = number_of_sections+1 WHERE (idprofessor = NEW.professor);
+END$$
+
+
+DROP TRIGGER IF EXISTS `Teaches_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Teaches_BEFORE_DELETE` BEFORE DELETE ON `Teaches` FOR EACH ROW
+BEGIN
+UPDATE Professor SET number_of_sections = number_of_sections-1 WHERE (idprofessor = OLD.professor);
+END$$
+
+
+DROP TRIGGER IF EXISTS `Studies_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Studies_AFTER_INSERT` AFTER INSERT ON `Studies` FOR EACH ROW
+BEGIN
+UPDATE Degree SET number_of_students = number_of_students +1 WHERE (iddegree = NEW.degree);
+END$$
+
+
+DROP TRIGGER IF EXISTS `Studies_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Studies_BEFORE_DELETE` BEFORE DELETE ON `Studies` FOR EACH ROW
+BEGIN
+UPDATE Degree SET number_of_students = number_of_students -1 WHERE (iddegree = OLD.degree);
+END$$
+
+
+DROP TRIGGER IF EXISTS `Competes_AFTER_INSERT` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Competes_AFTER_INSERT` AFTER INSERT ON `Competes` FOR EACH ROW
+BEGIN
+UPDATE Competition SET number_of_teams = number_of_teams + 1 WHERE idcompetition = NEW.competition;
+
+END$$
+
+
+DROP TRIGGER IF EXISTS `Competes_BEFORE_DELETE` $$
+CREATE DEFINER = CURRENT_USER TRIGGER `CollegeDB`.`Competes_BEFORE_DELETE` BEFORE DELETE ON `Competes` FOR EACH ROW
+BEGIN
+UPDATE Competition SET number_of_teams = number_of_teams -1 WHERE idcompetition = OLD.competition;
+
+END$$
+
+
+DELIMITER ;
+
+CREATE FUNCTION full_name(first_nm VARCHAR(45), last_nm VARCHAR(45))
+RETURNS VARCHAR(45) DETERMINISTIC
+RETURN CONCAT(first_nm, ' ', last_nm);
+
+DELIMITER $$
+CREATE PROCEDURE frat_members_more_than (frat_num INT)
+BEGIN
+	SELECT * FROM Fraternity WHERE num_of_members >frat_num;
+END$$
+DELIMITER ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
