@@ -11,8 +11,8 @@ Welcome to Database Systems!. Please modify this README file with the following 
 | ------------------------ | -------------------------- |
 | Milestone #1             |            completed       |
 | Milestone #2             |            completed       |
-| Milestone #3             |        not completed       |
-| Extra-credit              |        not completed       |
+| Milestone #3             |            completed       |
+| Extra-credit             |        not completed       |
 
 
 If one of the milestones, or extra-credit assignment, is not set to "completed" by its due date, 
