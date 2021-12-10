@@ -1,0 +1,29 @@
+Pablo Martinez Latorre - 922270801
+
+Discord link: https://discord.gg/
+
+Replit link: https://replit.com/join/lvlpuormae-pablosfsu
+
+Bot commands:
+
+1. /getnumsections <course> 
+2. /at-capacity
+3. /num-wins <team>
+4. /next-match <team1> <team2>
+5. /percentage-fails <semester>
+6. /top-venues <month>
+7. /pop-category
+8. /avg-classes <course> 
+
+Business Rules:
+
+1. For each course, find the number of sections with more than 10 students.
+2. For each gym, find if it is at full capacity.
+3. For each team, find the number of competitions they have won.
+4. For any two teams, find their soonest upcoming match.
+5. Find the percentage of students who failed a course for a given semester.
+6. Find the top 5 most used venues (venues with the most events) during a given month.
+7. Find the most popular category of products in stock in all stores. 
+8. For all courses, find the average number of classes all the sections have. 
+              (for example, if a course has 3 sections with 3,2, and 1 weekly classes each, 
+                the average number of weekly classes that course would be 2) 
