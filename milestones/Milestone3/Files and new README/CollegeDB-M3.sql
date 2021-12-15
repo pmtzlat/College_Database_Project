@@ -1425,9 +1425,9 @@ RETURNS VARCHAR(45) DETERMINISTIC
 RETURN CONCAT(first_nm, ' ', last_nm);
 
 DELIMITER $$
-CREATE PROCEDURE frat_members_more_than (frat_num INT)
+CREATE PROCEDURE frat_change_name(newname VARCHAR(45),frat_id INT)
 BEGIN
-	SELECT * FROM Fraternity WHERE num_of_members >frat_num;
+	UPDATE fraternity SET name=newname where idfraternity=frat_id;
 END$$
 DELIMITER ;
 
